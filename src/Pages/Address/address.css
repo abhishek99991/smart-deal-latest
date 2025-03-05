@@ -1,0 +1,56 @@
+.your-address{
+  font-size: 35px;
+  margin: 20px 0;
+}
+
+.address-cont{ 
+  padding: 0 200px;
+}
+
+.address-card-top{
+  border:  1px solid #6F4E37;
+  border-radius: 10px;
+  padding: 30px 15px;
+}
+
+.address-card-plus{
+  color: #A1A1A1;
+  font-size: 86px;
+}
+  
+.card-name{
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.card-para {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.card-edit-remove{
+  margin-top: 10px;
+}
+.card-edit-remove .edit, .card-edit-remove .remove{
+  font-size: 14px;
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+.edit-remove-mid{
+  margin: 0 5px;
+}
+.card-para-no {
+  font-size: 13px;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.add-address{
+  font-size: 14px;
+  font-weight: 600;
+  margin: 10px 0;
+}
+.address-card-second{
+  border:  1px solid var(--secondary-color);
+  border-radius: 10px;
+  padding: 18px 20px;
+}

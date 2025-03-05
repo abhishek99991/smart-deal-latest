@@ -1,0 +1,148 @@
+.shop-mob-top{
+  border: 2px solid var(--secondary-color);
+  padding: 10px 15px;
+  border-radius: 20px;
+  height: 600px;
+  overflow-y: auto;
+}
+.shop-top{
+  margin-top: 30px;
+}
+.clear-filter{
+  margin: 10px 0;
+}
+.clear-filter div{
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.clear-filter a{
+  color: var(--secondary-color);
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.filter-search{
+  margin: 10px 0;
+  position: relative;
+}
+.filter-search input {
+  width: 100%;
+  padding: 10px 30px;
+  outline: none;
+  border: 1px solid var(--secondary-color);
+  color: var(--secondary-color);
+  border-radius: 10px;
+  font-size: 15px;
+}
+.filter-search .search-icon{
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    color: var(--secondary-color);
+
+}
+.by-price{
+  margin: 10px 0;
+}
+.by-price h3{
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: #fff;
+}
+.by-price-inner{
+  margin: 10px 0;
+  
+}
+.by-price-inner select{
+  padding: 5px 10px;
+  outline: none;
+  border: 1px solid var(--secondary-color);
+  width: 40%;
+  border-radius: 5px;
+}
+.by-price-inner p{
+  font-size: 15px;
+  color: #fff;
+}
+.by-brand{
+  margin: 10px 0;
+
+}
+.by-brand h3{
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: #fff;
+}
+.brand-check{
+  margin: 10px 0;
+}
+
+.brand-check p{
+  margin-left: 5px;
+  font-size: 15px;
+  color: #fff;
+  margin-bottom: 0;
+}
+.shop-cart-top {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
+  padding: 20px 0;
+  border-radius: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  height: 500px;
+  position: relative;
+  background-color: #FEE506;
+}
+.shop-cart-top:hover{
+  box-shadow: 0px 2px 5px rgba(255, 215, 0, 0.6);
+  transform: translateY(-3px);
+
+}
+.smartphone-res{
+  color: #fff;
+}
+.cart-img {
+  padding: 10px 26px;
+  width: 100%;
+  height: 250px;
+  margin-bottom: 20px;
+}
+.cart-img img {
+  width: 100%;
+  height: 100%;
+}
+.item-text-star{
+  padding: 0 15px;
+}
+.item-text-star p{
+  font-size: 15px; 
+  margin: 10px 0;
+  width: 100%;
+}
+.brown{
+  color: var(--secondary-color);
+}
+.cart-price {
+  font-size: 18px;
+  margin: 5px 0;
+  font-weight: 600;
+}
+.cart-price2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-decoration: line-through;
+}
+.add-cart-btn {
+  padding: 10px 20px;
+  outline: none;
+  background-color: var(--secondary-color);
+  color: #fff;
+  font-size: 15px;
+  border-radius: 10px;
+  border: none;
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+}
