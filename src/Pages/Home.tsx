@@ -80,7 +80,7 @@ const Home = () => {
   const settings = {
     dots: false,
     infinite: true,
-    speed: 2000,
+    speed: 5,
     slidesToShow: 7,
     slidesToScroll: 1,
     autoplay: true,
@@ -186,7 +186,6 @@ const Home = () => {
 
       <BestSeller />
 
-      <SliderSection />
       <SliderSection />
 
       <div className="container">

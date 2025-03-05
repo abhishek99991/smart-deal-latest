@@ -240,11 +240,11 @@ a{
 }
 .headercart-val-head span{
   position: absolute;
-  top: -13px;
+  top: -14px;
   right: 2px;
-  padding: 3px 5px;
-  background-color: #2162A1;
-  color: #fff;
+  padding: 3px 7px;
+  background-color: #FEE506;
+  color: #000;
   font-size: 12px;
   border-radius: 50%;
 }
@@ -278,15 +278,12 @@ a{
 }
 .slide-speaker{
   width: 100%;
-  height: 100px;
   padding: 20px 15px;
   /* background-color: var(--primary-color); */
   border-radius: 50%;
 }
 .slide-speaker img {
   width: 100%;
-  /* border-radius: 10px; */
-  height: 100%;
 }
 .slide-top p{
   margin-top: 10px;
@@ -379,12 +376,14 @@ a{
   padding: 5px 20px;
   border-radius: 30px;
   margin-bottom: 10px;
+  height: 250px;
 }
 .seller-img1 img{
   width: 100%;
+  height: 100%;
 }
 .seller-top {
-  padding: 10px 30px;
+  padding: 25px 30px;
   background-color: #FEE506;
   border-radius: 10px;
   margin-bottom: 10px;
@@ -497,7 +496,7 @@ padding-bottom: 5px;
 outline: none;
 border: none;
 border-bottom: 1px solid #000;
-color: #9F9F9F;
+color: #000;
 
 }
 .foot-subscribe p{
@@ -845,11 +844,26 @@ margin-bottom: 0;
   padding: 60px 0 ;
 }
 .speaker-slider-img{
-  height: 400px;
+  background-color: #FEE506;
+  padding: 20px 25px;
+  border-radius: 10px;
 }
-.speaker-slider-img img{
+.speaker-slider-img h3{
+  font-size: 25px;
+  text-align: center;
+  color: #000;
+  margin: 10px 0;
+}
+.speaker-slider-img-inner {
+  /* height: 270px; */
+  padding: 15px 20px;
+  background-color: #FFEE5A;
+  border-radius: 20px;
+  margin-top: 30px;
+}
+.speaker-slider-img-inner img{
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 }
 .bose-smart-text{
   font-size: 15px;
@@ -860,21 +874,23 @@ margin-bottom: 0;
   margin: 10px 0;
 }
 .speaker-price-first{
-  font-size: 15px;
-  color: var(--secondary-color);
+  font-size: 16px;
+  color: #000;
   font-weight: 600;
+  margin-bottom: 8px;
 }
 .speaker-price-second{
   font-size: 15px;
-  color: var(--secondary-color);
+  color: #000;
   font-weight: 600;
   text-decoration: line-through;
 }
 .speaker-price-off{
-  color: #fff;
-  background-color: var(--secondary-color);
+  color: #000;
+  background-color: #fff;
   padding: 5px 10px;
   margin-left: 10px;
+  border-radius: 10px;
 }
 .speaker-add-buy{
   margin: 10px 0;
@@ -884,7 +900,7 @@ margin-bottom: 0;
 }
 .speaker-add button{
   font-size: 15px;
-  color: #fff;
+  color: #000;
   background-color: var(--secondary-color);
   padding: 10px 15px;
   border-radius: 20px;
@@ -892,7 +908,7 @@ margin-bottom: 0;
   border: 1px solid var(--secondary-color);
 }
 .speaker-add button:hover{
-  color: var(--primary-color);
+  color: var(--secondary-color);
   background-color: #fff;
 }
 .speaker-buy button{
@@ -905,17 +921,17 @@ margin-bottom: 0;
   border: 1px solid var(--secondary-color);
 }
 .speaker-buy button:hover{
-  color: #fff;
-  background-color: var(--secondary-color);
+  color: #000;
+  background-color: var(--secondary-color); 
 }
 .slide-top-head {
   border: 2px solid var(--secondary-color);
-  padding: 40px 25px;
+  padding: 20px 25px;
   border-radius: 20px;
-  height: 400px;
+  background-color:  var(--secondary-color);
 }
 .speaker-margin{
-  margin-bottom: 60px;
+  margin-bottom: 20px;
 }
 .speaker-slide .slick-slide>div {
   margin-right: 10px;
@@ -1265,4 +1281,32 @@ margin-bottom: 0;
 .mob-header-search-icon {
   margin-right: 0px;
 }
+.headercart-val-head span {
+  right: -10px;
 }
+.seller-img1 {
+  height: 400px;
+}
+}
+
+.custom-pagination .ant-pagination-item a {
+  color: #000 !important; /* Change text color */
+  background-color: var(--secondary-color);
+  border: none;
+  border-radius: 50%;
+}
+
+.custom-pagination .ant-pagination-item-active {
+  color: var(--secondary-color) !important;
+  background-color: #f4f4f4 ;
+}
+.custom-pagination .ant-pagination-prev .anticon,
+.custom-pagination .ant-pagination-next .anticon {
+  color: #f4f4f4 !important; /* Change arrow color */
+}
+
+.custom-pagination .ant-pagination-prev:hover .anticon,
+.custom-pagination .ant-pagination-next:hover .anticon {
+  color: var(--secondary-color) !important; /* Change hover color */
+}
+

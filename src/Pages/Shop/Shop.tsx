@@ -17,7 +17,7 @@ import {
 } from "../../../Jotai";
 import { useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
-
+ 
 const Shop = () => {
   const [currentPage, setCurrentPage]: any = useState(1);
   const [totalPages, setTotalPages]: any = useState(0);
@@ -120,6 +120,7 @@ const Shop = () => {
       });
   };
 
+  
   return (
     <div>
       {loading && <FullScreenLoader />}
@@ -206,6 +207,7 @@ const Shop = () => {
                       </p>
                       <p>{item.description.slice(0, 60)}...</p>
                       <div className="flex align-center">
+                      {/* {item.overall_rating} */}
                         <IoIosStar className="brown" size={20} />
                         <IoIosStar className="brown" size={20} />
                         <IoIosStar className="brown" size={20} />
@@ -241,6 +243,7 @@ const Shop = () => {
           onChange={onPageChange}
           showSizeChanger={false}
           align="center"
+          className="custom-pagination"
         />
       )}
       <Footer />

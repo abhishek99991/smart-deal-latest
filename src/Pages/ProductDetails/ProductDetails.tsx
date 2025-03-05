@@ -99,10 +99,10 @@ const ProductDetails = () => {
   const settings = {
     dots: false,
     infinite: true,
-    speed: 500,
-    slidesToShow: 2,
+    speed: 1000,
+    slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: false,
+    autoplay: true,
     autoplaySpeed: 1000,
     arrows: true,
     prevArrow: <CustomPrevArrow />,
@@ -162,7 +162,11 @@ const ProductDetails = () => {
         });
     }
   }, [params?.id]);
-
+  useEffect(() => {
+    if (product) {
+      setSelectedImage(product.image);
+    }
+  }, [product]);
   const highlightsArray = (product.highlights || "").split("\r\n");
 
   const handleStarClick = (value: number) => {
@@ -359,8 +363,8 @@ const ProductDetails = () => {
                 <span className="ratingpp-close-btn" onClick={closeRatingPopup}>
                   &times;
                 </span>
-                <h2>Rating & Reviews</h2>
-                <p>Overall Rating</p>
+                <h2 className="rating-review">Rating & Reviews</h2>
+                <p className="rating-review">Overall Rating</p>
                 <div className="flex align-center ratingpp-star">
                   {[1, 2, 3, 4, 5].map((value) => (
                     <IoIosStar
@@ -372,7 +376,7 @@ const ProductDetails = () => {
                       onClick={() => handleStarClick(value)}
                       style={{
                         cursor: "pointer",
-                        color: selectedRating >= value ? "#6F4E37" : "#ccc",
+                        color: selectedRating >= value ? "#FEE506" : "#ccc",
                       }}
                     />
                   ))}
@@ -398,43 +402,58 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      <div className="container slider-head">
-        <Slider {...settings}>
-          {reviews?.map((item: any) => (
-            <div className="product-cards-top" key={item.id}>
-              <div className="product-card-text">
-                {item?.user?.first_name} {item?.user?.last_name}
+      {reviews.length > 1 ? (
+        <div className="container slider-head">
+          <Slider {...settings} slidesToShow={Math.min(reviews.length, 2)}>
+            {reviews.map((item: any) => (
+              <div className="product-cards-top" key={item.id}>
+                <div className="product-card-text">
+                  {item?.user?.first_name} {item?.user?.last_name}
+                </div>
+                <div className="flex product-card-para">
+                  {[...Array(item.rating)].map((_, index) => (
+                    <IoIosStar key={index} size={20} className="brown" />
+                  ))}
+                  {[...Array(5 - item.rating)].map((_, index) => (
+                    <IoIosStarOutline key={index} size={20} className="brown" />
+                  ))}
+                </div>
+                <p className="product-card-para">{item.comment}</p>
+                <p className="product-card-para">
+                  {new Intl.DateTimeFormat("en-GB").format(
+                    new Date(item.created_at)
+                  )}
+                </p>
               </div>
-              <div className="flex product-card-para">
-                {/* {item?.rating} */}
-                <IoIosStar size={20} className="brown" />
-                <IoIosStar size={20} className="brown" />
-                <IoIosStar size={20} className="brown" />
-                <IoIosStarHalf size={20} className="brown" />
-                <IoIosStarOutline size={20} className="brown" />
-              </div>
-              <p className="product-card-para">{item.comment}</p>
-              {/* <div className="flex align-center product-card-img-top">
-                   <div>
-                     <img src={ProductSmallImg} alt="" />
-                   </div>
-                   <div>
-                     <img src={ProductSmallImg} alt="" />
-                   </div>
-                 </div> */}
-              {/* <p className="product-card-para">Dubai </p> */}
-              <p className="product-card-para">
-                {new Intl.DateTimeFormat("en-GB").format(
-                  new Date(item.created_at)
-                )}
-              </p>
+            ))}
+          </Slider>
+        </div>
+      ) : reviews.length === 1 ? (
+        <div className="container single-review">
+          <div className="product-cards-top">
+            <div className="product-card-text">
+              {reviews[0]?.user?.first_name} {reviews[0]?.user?.last_name}
             </div>
-          ))}
-        </Slider>
-      </div>
+            <div className="flex product-card-para">
+              {[...Array(reviews[0].rating)].map((_, index) => (
+                <IoIosStar key={index} size={20} className="brown" />
+              ))}
+              {[...Array(5 - reviews[0].rating)].map((_, index) => (
+                <IoIosStarOutline key={index} size={20} className="brown" />
+              ))}
+            </div>
+            <p className="product-card-para">{reviews[0].comment}</p>
+            <p className="product-card-para">
+              {new Intl.DateTimeFormat("en-GB").format(
+                new Date(reviews[0].created_at)
+              )}
+            </p>
+          </div>
+        </div>
+      ) : null}
 
       <BestSeller />
-      <BestSeller />
+
       <Footer />
     </div>
   );

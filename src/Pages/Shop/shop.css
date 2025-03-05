@@ -2,8 +2,23 @@
   border: 2px solid var(--secondary-color);
   padding: 10px 15px;
   border-radius: 20px;
-  height: 600px;
+  height: 700px;
   overflow-y: auto;
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+    -ms-overflow-style: none
+}
+.shop-mob-top::-webkit-scrollbar {
+  width: 4px; 
+}
+
+.shop-mob-top::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Light grey track */
+  border-radius: 10px;
+}
+
+.shop-mob-top::-webkit-scrollbar-thumb {
+  background: var(--secondary-color); /* Thumb color */
+  border-radius: 10px;
 }
 .shop-top{
   margin-top: 30px;
@@ -78,7 +93,10 @@
 .brand-check{
   margin: 10px 0;
 }
-
+.no-products{
+  font-size: 20px;
+  color: #f4f4f4;
+}
 .brand-check p{
   margin-left: 5px;
   font-size: 15px;

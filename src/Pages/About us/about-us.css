@@ -9,7 +9,7 @@ body {
 .about-us-page h2{
   font-size: 35px;
   margin: 20px 0;
-  color: #fff;
+  color: var(--secondary-color);
 }
 
 .about-us-page h3{

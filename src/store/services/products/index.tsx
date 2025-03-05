@@ -60,3 +60,8 @@ export const bestSellers = () =>
   callApi({
     uriEndPoint: productEndpoints.bestSellers.v1,
   });
+
+export const randomCategory = () =>
+  callApi({
+    uriEndPoint: productEndpoints.randomCategory.v1,
+  });

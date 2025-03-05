@@ -11,8 +11,7 @@ const footer = () => {
                 <div className='ds-logo'>
                   <img src={logo} alt="" />
                 </div>
-                <p>400 University Drive Suite 200 Coral <br /> Gables,
-                FL 33134 USA</p>
+                <p>Deal Smart Trading LLC <br /> 1004, Titanium Tower, AL Karama <br />Dubai, UAE</p>
             </div>
             <div className="col-20 footer-menu">
               <div className='foot-links'>Links</div>

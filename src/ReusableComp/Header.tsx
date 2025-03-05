@@ -99,6 +99,7 @@ const Header = () => {
   }, [search]);
 
   const getSearchResponse = (name: any) => {
+    setSearch(name);
     setSearchTrigger(true);
 
     getCategoryProduct({
@@ -138,6 +139,7 @@ const Header = () => {
   }, [cartCountApiCall]);
 
   const handleSearchClick = () => {
+    setSearchTrigger(true);
     getCategoryProduct({
       query: {
         q: search,
@@ -146,14 +148,18 @@ const Header = () => {
       .then((res: any) => {
         navigate("/shop");
         setIsDropdownOpen(false);
-        setSearchResults(res.results.products);
+        setSearchResults(res.results.products); 
         setCheckBoxArray({
           available_brands: res?.results?.available_brands,
           available_colors: res?.results?.available_colors,
         });
+        setSearchResultsFinal(res.results.products);
       })
       .catch((err: any) => {
         console.error("Error fetching search results:", err);
+      })
+      .finally(() => {
+        setTimeout(() => setSearchTrigger(false), 1000); // Reset trigger after a short delay
       });
   };
 
