@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./shop.css";
 import Header from "../../ReusableComp/Header";
 import Footer from "../../ReusableComp/footer";
-import { CiSearch } from "react-icons/ci";
-import ShopCartImg from "../../assets/shop-mobile-img.png";
 import { IoIosStar } from "react-icons/io";
 import { IoIosStarHalf } from "react-icons/io";
 import { IoIosStarOutline } from "react-icons/io";
@@ -12,20 +10,15 @@ import { getCategoryProduct } from "../../store/services/products";
 import FullScreenLoader from "../../ReusableComp/FullScreenLoader";
 import { Pagination } from "antd";
 import { getProductDetail } from "../../store/services/products";
-
-import toast from "react-hot-toast";
-import { useLocation } from "react-router-dom";
 import {
   searchTriggerAtom,
   searchResultsAtom,
-  cartCountApiCaller,
+  brandCheckBoxGlobal,
 } from "../../../Jotai";
 import { useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
-import { cartQuantityManager } from "../../store/services/products";
 
 const Shop = () => {
-  // const [regularList, setRegularList]: any = useState([]);
   const [currentPage, setCurrentPage]: any = useState(1);
   const [totalPages, setTotalPages]: any = useState(0);
   const navigate = useNavigate();
@@ -34,14 +27,11 @@ const Shop = () => {
   const [loading, setLoading] = useState(false);
   const [apiResponse, setApiResponse]: any = useState([]);
   const [resultSearch] = useAtom(searchResultsAtom);
-  const [, setCartCountApiCall] = useAtom(cartCountApiCaller);
-  const [filterData, setFilterData]: any = useState([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState<number | undefined>();
   const [maxPrice, setMaxPrice] = useState<number | undefined>();
-  const location = useLocation();
-  const searchResults = location.state?.searchResults || [];
+  const [checkBoxArray, setCheckBoxArray]: any = useAtom(brandCheckBoxGlobal);
 
   const handleBrandChange = (brand: string) => {
     setSelectedBrands((prev) =>
@@ -89,6 +79,10 @@ const Shop = () => {
         setLoading(false);
         setTotalPages(res?.total_pages || 0);
         setApiResponse(res?.results?.products);
+        setCheckBoxArray({
+          available_brands: res?.results?.available_brands,
+          available_colors: res?.results?.available_colors,
+        });
       })
       ?.catch((err: any) => {
         console.log("err", err);
@@ -103,18 +97,6 @@ const Shop = () => {
     selectedBrands,
     selectedColors,
   ]);
-  // useEffect(() => {
-  //   getCategoryProduct({
-  //     query: {
-  //       min_price: minPrice,
-  //       max_price: maxPrice,
-  //       colors: selectedColors.length ? selectedColors.join(",") : undefined,
-  //       brands: selectedBrands.length ? selectedBrands.join(",") : undefined,
-  //     },
-  //   }).then((res: any) => {
-  //     setFilterData(res?.results);
-  //   });
-  // }, []);
 
   const onPageChange = (page: any) => {
     setCurrentPage(page);
@@ -138,23 +120,6 @@ const Shop = () => {
       });
   };
 
-  // const addCartInIcon = (id: any, e: any) => {
-  //   e.stopPropagation();
-  //   cartQuantityManager({
-  //     body: {
-  //       product_id: id,
-  //       quantity: 1,
-  //     },
-  //   })
-  //     .then(() => {
-  //       toast.success("Item added to cart! 🛒");
-  //       setCartCountApiCall((oldVal: any) => oldVal + 1);
-  //     })
-  //     .catch((err: any) => {
-  //       console.error("Error adding to cart:", err);
-  //       toast.error("Failed to add item to cart.");
-  //     });
-  // };
   return (
     <div>
       {loading && <FullScreenLoader />}
@@ -197,7 +162,7 @@ const Shop = () => {
 
             <div className="by-brand">
               <h3>By Brands</h3>
-              {searchResults?.available_brands?.map((item: any) => (
+              {checkBoxArray?.available_brands?.map((item: any) => (
                 <div className="flex align-center brand-check" key={item.id}>
                   <input
                     type="checkbox"
@@ -211,7 +176,7 @@ const Shop = () => {
 
             <div className="by-brand">
               <h3>By Color</h3>
-              {searchResults?.available_colors?.map((item: any) => (
+              {checkBoxArray?.available_colors?.map((item: any) => (
                 <div className="flex align-center brand-check" key={item.id}>
                   <input
                     type="checkbox"

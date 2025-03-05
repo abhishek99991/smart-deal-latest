@@ -15,6 +15,7 @@ import { CiSearch } from "react-icons/ci";
 import { useRef } from "react";
 
 import {
+  brandCheckBoxGlobal,
   cartCountApiCaller,
   registerPageClick,
   searchTriggerAtom,
@@ -41,6 +42,7 @@ const Header = () => {
   const searchRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const [, setCheckBoxArray]: any = useAtom(brandCheckBoxGlobal);
 
   const handleUserClick = () => {
     if (token) {
@@ -107,6 +109,10 @@ const Header = () => {
       .then((res: any) => {
         navigate("/shop"); // Change from "./shop" to "/shop" (absolute path)
         setIsDropdownOpen(false);
+        setCheckBoxArray({
+          available_brands: res?.results?.available_brands,
+          available_colors: res?.results?.available_colors,
+        });
         setSearchResultsFinal(res.results.products);
       })
       .catch((err: any) => {
@@ -118,11 +124,13 @@ const Header = () => {
   };
 
   const cartCountHandler = () => {
-    cartCountApi()
-      .then((res: any) => {
-        setCurrentCartCount(res?.cart_count);
-      })
-      ?.catch((err: any) => console.log("err", err));
+    if (localStorage.getItem("accessToken")) {
+      cartCountApi()
+        .then((res: any) => {
+          setCurrentCartCount(res?.cart_count);
+        })
+        ?.catch((err: any) => console.log("err", err));
+    }
   };
 
   useEffect(() => {
@@ -136,13 +144,13 @@ const Header = () => {
       },
     })
       .then((res: any) => {
-        navigate("/shop", { state: { searchResults: res.results } }); // Change from "./shop" to "/shop" (absolute path)
+        navigate("/shop");
         setIsDropdownOpen(false);
         setSearchResults(res.results.products);
-        console.log("ankit", res.results);
-
-        // Store API response
-        // setIsDropdownOpen(true); // Open dropdown
+        setCheckBoxArray({
+          available_brands: res?.results?.available_brands,
+          available_colors: res?.results?.available_colors,
+        });
       })
       .catch((err: any) => {
         console.error("Error fetching search results:", err);
