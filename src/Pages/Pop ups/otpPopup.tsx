@@ -9,11 +9,13 @@ import { useAtom } from "jotai";
 import { registerPageClick, UserEmail } from "../../../Jotai";
 import { resendOtp } from "../../store/services/Auth";
 import { forgetPasswordSendOtp } from "../../store/services/Auth";
+import FullScreenLoader from "../../ReusableComp/FullScreenLoader";
 
 const OtpPopup = ({ setData, data, onClose, forgotpass }: any) => {
   const [varifyOtp, setVarifyOtp]: any = useState(false);
   const [finalEmail]: any = useAtom(UserEmail);
   const [isRegister, setIsRegister] = useAtom(registerPageClick);
+  const [loading, setLoading] = useState(false);
   const otpSchema = Yup.object().shape({
     otp: Yup.array()
       .of(
@@ -25,6 +27,7 @@ const OtpPopup = ({ setData, data, onClose, forgotpass }: any) => {
   });
 
   const apiHandler = (values: any) => {
+    setLoading(true);
     const body = {
       email: data?.email,
       otp: values?.otp?.join(""),
@@ -38,11 +41,12 @@ const OtpPopup = ({ setData, data, onClose, forgotpass }: any) => {
           setVarifyOtp(true);
           setData(body);
           setIsRegister(false);
+          setLoading(true);
         })
         ?.catch((err: any) => {
-          console.log("err", err);
           toast.error(err?.data?.error);
-        });
+        })
+        .finally(() => setLoading(false));
     } else if (isRegister) {
       sendOtpEmail({
         body: {
@@ -57,36 +61,46 @@ const OtpPopup = ({ setData, data, onClose, forgotpass }: any) => {
             onClose();
           }
           setVarifyOtp(false);
+          setLoading(true);
         })
-        ?.catch((err: any) => console.log("err", err));
+        ?.catch((err: any) => console.log("err", err))
+        .finally(() => setLoading(false));
     }
   };
 
   const handleResendOtp = () => {
-        if(forgotpass){
-          forgetPasswordSendOtp({
-            body: {
-              email: finalEmail || data?.email,
-            },
-          })
-            .then((res: any) => {
-              toast.success(res.msg);
-            })
-            ?.catch((err: any) => console.log("err", err));
-        }else{
-          resendOtp({
-            body: {
-              email: finalEmail || data?.email,
-            },
-          }).then((res:any)=>{
-            toast.success(res.msg);
-          })
-          ?.catch((err: any) => console.log("err", err));
-        }
+    setLoading(true);
+    if (forgotpass) {
+      forgetPasswordSendOtp({
+        body: {
+          email: finalEmail || data?.email,
+        },
+      })
+        .then((res: any) => {
+          toast.success(res.msg);
+          setLoading(true);
+        })
+        ?.catch((err: any) => console.log("err", err))
+        .finally(() => setLoading(false));
+    } else {
+      resendOtp({
+        body: {
+          email: finalEmail || data?.email,
+        },
+      })
+        .then((res: any) => {
+          toast.success(res.msg);
+          setLoading(true);
+        })
+        ?.catch((err: any) => console.log("err", err))
+        .finally(() => setLoading(false));
+    }
   };
 
   return (
     <>
+      {" "}
+      {loading && <FullScreenLoader />}
       {!varifyOtp ? (
         <div className="otp-popup-overlay" onClick={onClose}>
           <div className="otp-popup-box" onClick={(e) => e.stopPropagation()}>
@@ -146,15 +160,25 @@ const OtpPopup = ({ setData, data, onClose, forgotpass }: any) => {
                     ))}
                   </div>
 
+                  {/* <div className="resend-text">
+            Get OTP on Email?{" "}
+            <a onClick={!loading ? handleResendOtp : undefined}>
+              {loading ? "Sending..." : "Click to resend"}
+            </a>
+    </div> */}
                   <p className="resend-text">
                     Didn’t get the OTP?{" "}
-                    <a href="#" onClick={handleResendOtp}>
-                      Click to resend
+                    <a onClick={!loading ? handleResendOtp : undefined}>
+                      {loading ? "Sending..." : "Click to resend"}
                     </a>
                   </p>
 
-                  <button type="submit" className="otp-verify-btn">
-                    Verify the Code
+                  <button
+                    type="submit"
+                    className="otp-verify-btn"
+                    disabled={loading}
+                  >
+                    {loading ? "Verifying..." : "Verify the Code"}
                   </button>
                 </Form>
               )}

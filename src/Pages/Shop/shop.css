@@ -20,6 +20,7 @@
   background: var(--secondary-color); /* Thumb color */
   border-radius: 10px;
 }
+
 .shop-top{
   margin-top: 30px;
 }
@@ -94,8 +95,9 @@
   margin: 10px 0;
 }
 .no-products{
-  font-size: 20px;
+  font-size: 23px;
   color: #f4f4f4;
+  margin: 0 auto;
 }
 .brand-check p{
   margin-left: 5px;
@@ -130,9 +132,16 @@
 .cart-img img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 .item-text-star{
   padding: 0 15px;
+}
+.item-text-star p:last-of-type{
+  font-weight: 600;
+}
+.item-text-star p:first-of-type{
+  color: #2162A1;
 }
 .item-text-star p{
   font-size: 15px; 

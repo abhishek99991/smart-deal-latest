@@ -22,6 +22,7 @@ import {
 } from "../../Jotai"; // Create a global state
 import { useAtom } from "jotai";
 import { searchResultsAtom } from "../../Jotai";
+import { getUserDetails } from "../store/services/Auth";
 
 const Header = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -43,6 +44,7 @@ const Header = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const [, setCheckBoxArray]: any = useAtom(brandCheckBoxGlobal);
+  const [firstLetter, setFirstLetter] = useState("");
 
   const handleUserClick = () => {
     if (token) {
@@ -108,7 +110,7 @@ const Header = () => {
       },
     })
       .then((res: any) => {
-        navigate("/shop"); // Change from "./shop" to "/shop" (absolute path)
+        navigate("/shop", { state: { nametoSend: name } }); // Change from "./shop" to "/shop" (absolute path)
         setIsDropdownOpen(false);
         setCheckBoxArray({
           available_brands: res?.results?.available_brands,
@@ -146,9 +148,9 @@ const Header = () => {
       },
     })
       .then((res: any) => {
-        navigate("/shop");
+        navigate("/shop", { state: { nametoSend: search } });
         setIsDropdownOpen(false);
-        setSearchResults(res.results.products); 
+        setSearchResults(res.results.products);
         setCheckBoxArray({
           available_brands: res?.results?.available_brands,
           available_colors: res?.results?.available_colors,
@@ -198,6 +200,14 @@ const Header = () => {
     };
   }, [isMenuOpen]);
 
+  // useEffect(() => {
+  //   getUserDetails()
+  //     .then((res: any) => {
+  //       setFirstLetter(res);
+  //     })
+  //     .catch((err) => console.log("err", err));
+  // }, []);
+  // console.log(firstLetter);
   return (
     <>
       <div className="nav-top header-desktop">
@@ -268,8 +278,9 @@ const Header = () => {
               )}
             </div>
             {localStorage.getItem("accessToken") ? (
-              <div onClick={handleUserClick}>
+              <div onClick={handleUserClick} className="first-letter">
                 <CiUser color="#fff" className="icon" size={20} />
+                {firstLetter}
               </div>
             ) : (
               <div onClick={handleUserClick} className="login-header">
@@ -342,7 +353,10 @@ const Header = () => {
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 {/* onClick={handleSearchClick} */}
-                <CiSearch className="header-search-icon" />
+                <CiSearch
+                  className="header-search-icon"
+                  onClick={handleSearchClick}
+                />
                 {isDropdownOpen && (
                   <ul className="search-dropdown">
                     {searchResults.map((item: any) => (

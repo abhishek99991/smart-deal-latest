@@ -75,12 +75,14 @@ const CartItem = ({ item, cartListDataApiResponse }: any) => {
         <img src={item?.product?.image} alt={item?.product?.description} />
       </div>
       <div className="col-25 shopping-jbl-product cart-pd-top">
-        <div>{item?.product?.brand}</div>
-        <div>{item?.product?.model}</div>
-        <div>{item?.product?.description}</div>
+        <div>
+          {item?.product?.brand} {item?.product?.model}
+        </div>
+        <div className="shopping-jbl-desc">{item?.product?.description}</div>
       </div>
       <div className="col-25 shopping-jbl-product cart-pd-top">
-        <div>{item?.product?.price} AED</div>
+        <div>{item?.product?.discounted_price} AED</div>
+        <div className="line-through">{item?.product?.price} AED</div>
       </div>
       <div className="col-25 text-center cart-pd-top">
         <div className="flex align-center cart-plus-minus-head">
@@ -149,7 +151,7 @@ const Cart = () => {
     return (
       <div>
         <Header />
-        <div className="container">Loading cart...</div>
+        <div className="container loading-cart">Loading cart...</div>
         <Footer />
       </div>
     );
@@ -169,7 +171,7 @@ const Cart = () => {
     <div>
       <Header />
       <div className="container">
-        <h2 className="shopping-bag">Shopping Bag</h2>
+        <h2 className="shopping-bag">Cart</h2>
         <div className="flex space-bw">
           <div className="col-70 ">
             {cartItems?.length > 0 ? (
@@ -197,7 +199,7 @@ const Cart = () => {
                 placeholder="Enter coupon code"
               />
               <div className="cart-input-arrrow" onClick={inputArrow}>
-                <FaArrowRight size={18} className="white" />
+                <FaArrowRight size={18} className="black" />
               </div>
             </div>
             <div className="cart-order">Order Summary</div>
@@ -207,11 +209,11 @@ const Cart = () => {
             </div>
             <div className="flex align-center space-bw order-subtotal">
               <div>Extra Discount</div>
-              <div>{data?.extra_discount} AED</div>
+              <div>-{data?.extra_discount} </div>
             </div>
             <div className="flex align-center space-bw order-subtotal">
               <div>Total Discount</div>
-              <div>{data?.total_dicount} AED</div>
+              <div>-{data?.total_dicount}</div>
             </div>
             <div className="flex align-center space-bw order-subtotal order-total">
               <div>Total</div>

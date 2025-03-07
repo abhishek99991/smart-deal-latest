@@ -4,6 +4,30 @@ import { bestSellers, getProductDetail } from "../store/services/products";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FullScreenLoader from "./FullScreenLoader";
+import { IoIosStar, IoIosStarHalf } from "react-icons/io";
+
+const renderStars = (rating: number) => {
+  const stars = [];
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+  // const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<IoIosStar key={`full-${i}`} className="brown" size={20} />);
+  }
+
+  if (hasHalfStar) {
+    stars.push(<IoIosStarHalf key="half" className="brown" size={20} />);
+  }
+
+  // for (let i = 0; i < emptyStars; i++) {
+  //   stars.push(
+  //     <IoIosStarOutline key={`empty-${i}`} className="brown" size={20} />
+  //   );
+  // }
+
+  return stars;
+};
 
 const BestSeller = () => {
   const [isbestSellers, setIsBestSellers]: any = useState([]);
@@ -20,10 +44,8 @@ const BestSeller = () => {
       .then((res: any) => {
         setLoading(false);
         navigate(`/product-details/${id}`, { state: { product: res } });
-        console.log("reshhhhhhhhhhhhhhhhhh", res);
       })
       .catch((err: any) => {
-        console.log("err", err);
         setLoading(true);
       });
   };
@@ -36,7 +58,9 @@ const BestSeller = () => {
       .catch((err) => console.log("err", err));
   }, []);
 
-  console.log("first", isbestSellers);
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, [getProductDet]);
   return (
     <div className="container">
       {loading && <FullScreenLoader />}
@@ -51,15 +75,17 @@ const BestSeller = () => {
             <div className="seller-img1">
               <img src={item.image} alt="" />
             </div>
-            <p className="seller-text"> {item.highlights.slice(0, 60)}...</p>
-            <p className="sell-sony">
-              {item.brand} {item.model}
-            </p>
-            <FaStar color="#DE7921" />
-            <p className="sell-sony">
-              {(item.price * (100 - item.discount) * 0.01).toFixed(2)} AED
-            </p>
-            <p className="sell-sony sell-sony-through">{item.price} AED</p>
+            <div className="seller-img-bottom">
+              <p className="seller-text"> {item.highlights.slice(0, 60)}...</p>
+              <p className="sell-sony">
+                {item.brand} {item.model}
+              </p>
+              <div className="flex align-center">
+                {renderStars(item.overall_rating)}
+              </div>
+              <p className="sell-sony">{item.discounted_price} AED</p>
+              <p className="sell-sony sell-sony-through">{item.price} AED</p>
+            </div>
           </div>
         ))}
       </div>

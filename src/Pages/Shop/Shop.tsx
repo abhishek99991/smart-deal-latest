@@ -5,7 +5,7 @@ import Footer from "../../ReusableComp/footer";
 import { IoIosStar } from "react-icons/io";
 import { IoIosStarHalf } from "react-icons/io";
 import { IoIosStarOutline } from "react-icons/io";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { getCategoryProduct } from "../../store/services/products";
 import FullScreenLoader from "../../ReusableComp/FullScreenLoader";
 import { Pagination } from "antd";
@@ -17,7 +17,30 @@ import {
 } from "../../../Jotai";
 import { useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
- 
+
+const renderStars = (rating: number) => {
+  const stars = [];
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+  // const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<IoIosStar key={`full-${i}`} className="brown" size={20} />);
+  }
+
+  if (hasHalfStar) {
+    stars.push(<IoIosStarHalf key="half" className="brown" size={20} />);
+  }
+
+  // for (let i = 0; i < emptyStars; i++) {
+  //   stars.push(
+  //     <IoIosStarOutline key={`empty-${i}`} className="brown" size={20} />
+  //   );
+  // }
+
+  return stars;
+};
+
 const Shop = () => {
   const [currentPage, setCurrentPage]: any = useState(1);
   const [totalPages, setTotalPages]: any = useState(0);
@@ -32,6 +55,8 @@ const Shop = () => {
   const [minPrice, setMinPrice] = useState<number | undefined>();
   const [maxPrice, setMaxPrice] = useState<number | undefined>();
   const [checkBoxArray, setCheckBoxArray]: any = useAtom(brandCheckBoxGlobal);
+  const location = useLocation();
+  const qname = location?.state?.nametoSend;
 
   const handleBrandChange = (brand: string) => {
     setSelectedBrands((prev) =>
@@ -67,6 +92,7 @@ const Shop = () => {
     setLoading(true);
     getCategoryProduct({
       query: {
+        q: qname,
         id: params?.id,
         page: currentPage,
         min_price: minPrice,
@@ -112,7 +138,6 @@ const Shop = () => {
       .then((res: any) => {
         setLoading(false);
         navigate(`/product-details/${id}`, { state: { product: res } });
-        console.log("reshhhhhhhhhhhhhhhhhh", res);
       })
       .catch((err: any) => {
         console.log("err", err);
@@ -120,13 +145,12 @@ const Shop = () => {
       });
   };
 
-  
   return (
     <div>
       {loading && <FullScreenLoader />}
       <Header />
       <div className="container">
-        <h3 className="smartphone-res">Results for Smartphones</h3>
+        {/* <h3 className="smartphone-res">Results</h3> */}
         <div className="flex space-bw shop-top">
           <div className="col-25 shop-mob-top">
             <div className="flex align-center space-bw clear-filter">
@@ -141,28 +165,30 @@ const Shop = () => {
             </div> */}
 
             <div className="by-price">
-              <h3>By Price</h3>
+              <h3>Price</h3>
               <div className="flex align-center space-bw by-price-inner">
                 <select onChange={handleMinPriceChange}>
-                  <option value="">0</option>
-                  <option value="10000">{"\u20B9"}10000</option>
-                  <option value="15000">{"\u20B9"}15000</option>
-                  <option value="20000">{"\u20B9"}20000</option>
-                  <option value="30000">{"\u20B9"}30000</option>
+                  <option value="0">Min</option>
+                  <option value="100">100 AED</option>
+                  <option value="500">500 AED</option>
+                  <option value="1000">1000 AED</option>
+                  <option value="10000">10000 AED</option>
                 </select>
                 <p>to</p>
                 <select onChange={handleMaxPriceChange}>
-                  <option value="10000">{"\u20B9"}10000</option>
-                  <option value="15000">{"\u20B9"}15000</option>
-                  <option value="20000">{"\u20B9"}20000</option>
-                  <option value="30000">{"\u20B9"}30000</option>
-                  <option value="40000">{"\u20B9"}40000+</option>
+                  <option value="100000000">Max</option>
+                  <option value="1000">1000 AED</option>
+                  <option value="10000">10000 AED</option>
+                  <option value="15000">15000 AED</option>
+                  <option value="20000">20000 AED</option>
+                  <option value="30000">30000 AED</option>
+                  <option value="40000">40000 AED</option>
                 </select>
               </div>
             </div>
 
             <div className="by-brand">
-              <h3>By Brands</h3>
+              <h3>Brands</h3>
               {checkBoxArray?.available_brands?.map((item: any) => (
                 <div className="flex align-center brand-check" key={item.id}>
                   <input
@@ -176,17 +202,32 @@ const Shop = () => {
             </div>
 
             <div className="by-brand">
-              <h3>By Color</h3>
-              {checkBoxArray?.available_colors?.map((item: any) => (
-                <div className="flex align-center brand-check" key={item.id}>
-                  <input
+              <h3>Color</h3>
+              <div className="flex align-center">
+                {checkBoxArray?.available_colors?.map((item: any) => (
+                  <div
+                    className="flex align-center space-bw brand-check col-20"
+                    key={item.id}
+                  >
+                    {/* <input
                     type="checkbox"
                     checked={selectedColors.includes(item)}
                     onChange={() => handleColorChange(item)}
-                  />
-                  <p>{item}</p>
-                </div>
-              ))}
+                  /> */}
+                    <div
+                      onClick={() => handleColorChange(item)}
+                      style={{
+                        backgroundColor: item,
+                        width: "20px",
+                        height: "20px",
+                        border: selectedColors.includes(item)
+                          ? "2px solid black"
+                          : "1px solid #ccc",
+                      }}
+                    ></div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           <div className="col-75">
@@ -202,20 +243,23 @@ const Shop = () => {
                       <img src={item.image} alt="" />
                     </div>
                     <div className="item-text-star">
+                      <p>{item.description.slice(0, 60)}...</p>
                       <p>
                         {item.brand} {item.model}
                       </p>
-                      <p>{item.description.slice(0, 60)}...</p>
-                      <div className="flex align-center">
-                      {/* {item.overall_rating} */}
+                      {/* <div className="flex align-center">
+                        {item.overall_rating}
                         <IoIosStar className="brown" size={20} />
                         <IoIosStar className="brown" size={20} />
                         <IoIosStar className="brown" size={20} />
                         <IoIosStarHalf className="brown" size={20} />
                         <IoIosStarOutline className="brown" size={20} />
+                      </div> */}
+                      <div className="flex align-center">
+                        {renderStars(item.overall_rating)}
                       </div>
                       <h3 className="cart-price">
-                        {(item.price * (100 - item.discount) * 0.01).toFixed(2)}
+                        {item.discounted_price}
                         AED
                       </h3>
                       <div className="cart-price2">{item.price} AED</div>

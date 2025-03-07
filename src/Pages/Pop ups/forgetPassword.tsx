@@ -5,6 +5,7 @@ import otpEmail from "../../assets/email-otp.png";
 import OtpPopup from "./otpPopup";
 import { forgetPasswordSendOtp } from "../../store/services/Auth";
 import toast from "react-hot-toast";
+import FullScreenLoader from "../../ReusableComp/FullScreenLoader";
 
 interface ForgotPasswordProps {
   forgetonClose: () => void;
@@ -17,8 +18,10 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ forgetonClose }) => {
 
   const [sendOtp, isSendOtp]: any = useState(false);
   const [data, setData]: any = useState({});
+  const [loading, setLoading] = useState(false);
 
   const apiHandler = (values: any, setSubmitting: any) => {
+    setLoading(true);
     forgetPasswordSendOtp({
       body: values,
     })
@@ -28,22 +31,26 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ forgetonClose }) => {
           isSendOtp(true);
           toast.success(res?.msg);
           setData(values);
+          setLoading(false);
         }, 500);
       })
       .catch((err: any) => {
         setSubmitting(false);
         toast.error(err?.data?.error);
+        setLoading(false);
       });
   };
 
   return (
     <>
+      {" "}
+      {loading && <FullScreenLoader />}
       {sendOtp ? (
         <OtpPopup
           setData={setData}
           data={data}
           onClose={forgetonClose}
-          forgotpass={true} 
+          forgotpass={true}
         />
       ) : (
         <div className="forget-popup-container">

@@ -97,9 +97,16 @@
 .cart-img img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 .item-text-star{
   padding: 0 15px;
+}
+.item-text-star p:last-of-type{
+  font-weight: 600;
+}
+.item-text-star p:first-of-type{
+  color: #2162A1;
 }
 .item-text-star p{
   font-size: 15px;

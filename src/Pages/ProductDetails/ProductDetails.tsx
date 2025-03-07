@@ -24,6 +24,29 @@ import { productReviews } from "../../store/services/products";
 import { useParams } from "react-router-dom";
 import { postReviews } from "../../store/services/products";
 
+const renderStars = (rating: number) => {
+  const stars = [];
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+  // const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<IoIosStar key={`full-${i}`} className="brown" size={20} />);
+  }
+
+  if (hasHalfStar) {
+    stars.push(<IoIosStarHalf key="half" className="brown" size={20} />);
+  }
+
+  // for (let i = 0; i < emptyStars; i++) {
+  //   stars.push(
+  //     <IoIosStarOutline key={`empty-${i}`} className="brown" size={20} />
+  //   );
+  // }
+
+  return stars;
+};
+
 const ProductDetails = () => {
   const params: any = useParams();
   console.log("params", params);
@@ -99,7 +122,7 @@ const ProductDetails = () => {
   const settings = {
     dots: false,
     infinite: true,
-    speed: 1000,
+    speed: 2000,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
@@ -142,7 +165,7 @@ const ProductDetails = () => {
       })
       .catch((err: any) => {
         console.error("Error adding to cart:", err);
-        toast.error("Failed to add item to cart.");
+        toast.error("Need to login or sign in.");
       });
   };
 
@@ -175,7 +198,7 @@ const ProductDetails = () => {
 
   const SubmitReviewsBtn = () => {
     if (!comment || comment.trim().length === 0) {
-      toast.error("Review comment & rating is required.");
+      toast.error("Both Rating & Review is required.");
       return;
     }
     if (!selectedRating) {
@@ -191,7 +214,7 @@ const ProductDetails = () => {
         id: params?.id,
       },
     })
-      .then((res: any) => {
+      .then(() => {
         toast.success("Review submitted successfully.");
         setComment("");
         setSelectedRating(null);
@@ -202,6 +225,7 @@ const ProductDetails = () => {
         toast.error(err);
       });
   };
+  console.log("dfsafsafasdfafasadsaadadaafaf", product);
   return (
     <div>
       <Header />
@@ -216,17 +240,17 @@ const ProductDetails = () => {
             <h3 className="jbl-bluetooth">
               {product.brand} {product.model}
             </h3>
-            <div className="flex">
+            {/* <div className="flex">
               <IoIosStar size={20} className="brown" />
               <IoIosStar size={20} className="brown" />
               <IoIosStar size={20} className="brown" />
               <IoIosStarHalf size={20} className="brown" />
               <IoIosStarOutline size={20} className="brown" />
+            </div> */}
+            <div className="flex align-center">
+              {renderStars(product.overall_rating)}
             </div>
-            <h2 className="jbl-price">
-              {" "}
-              {(product.price * (100 - product.discount) * 0.01).toFixed(2)} AED
-            </h2>
+            <h2 className="jbl-price"> {product.discounted_price} AED</h2>
             <h2 className="jbl-price line-th">{product.price} AED</h2>
             <div className="flex align-center product-small-img">
               <div className="small-color">Color:</div>
@@ -300,9 +324,20 @@ const ProductDetails = () => {
 
         <div className="specification-top">
           <div className="specification-text">Specifications</div>
-          <div className="specific-textarea">
-            {" "}
-            <textarea name="" id=""></textarea>
+          <div className="specific-textarea flex space-bw">
+            {product.specifications.map((item: any) => (
+              <div
+                className="flex align-center specific-key-value"
+                key={item.id}
+              >
+                <div className="col-20 key-inner">{item.key}</div>
+                <div className="col-10 key-inner">:</div>
+                <div className="col-70 value-inner">{item.value}</div>
+              </div>
+            ))}
+
+            {/* {" "}
+            <textarea name="" id=""></textarea> */}
           </div>
         </div>
       </div>

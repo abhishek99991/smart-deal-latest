@@ -3,26 +3,14 @@ import Navbar from "../ReusableComp/Header";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import banner_img from "../assets/banner-img.png";
 import BestSeller from "../ReusableComp/BestSeller";
-import shopBrand from "../assets/shop-brand.png";
-import offerWeekImage from "../assets/offers-week.png";
-import newArrival from "../assets/new-arrival.png";
-import newArrivalHalf from "../assets/new-arrival-half.png";
 import Footer from "../ReusableComp/footer";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import ShopBrand1 from "../assets/shop-brand1.png";
-import ShopBrand2 from "../assets/shop-brand2.png";
-import ShopBrand3 from "../assets/shop-brand3.png";
-import ShopBrand4 from "../assets/shop-brand4.png";
-import ShopBrand5 from "../assets/shop-brand5.png";
-import ShopBrand6 from "../assets/shop-brand6.png";
-import ShopBrand7 from "../assets/shop-brand7.png";
 import SliderSection from "../ReusableComp/sliderSection";
 import { getCategories } from "../store/services/Auth";
 import { useNavigate } from "react-router-dom";
-import { allBanners, bestSellers } from "../store/services/products";
+import { allBanners } from "../store/services/products";
 
 const Home = () => {
   const [banners, setBanners]: any = useState([]);
@@ -34,44 +22,16 @@ const Home = () => {
     return (
       <MdOutlineKeyboardArrowLeft
         className="custom-arrow custom-prev"
-        // style={{
-        //   ...style,
-        //   display: "block",
-        //   color: "black",
-        //   fontSize: "24px",
-        //   position: "absolute",
-        //   left: "45%",
-        //   zIndex: 1,
-        //   cursor: "pointer",
-        //   backgroundColor: "efefef",
-        //   borderRadius: "10px",
-        //   top: "200px",
-        // }}
         onClick={onClick} // Fix: Add onClick handler
       />
     );
   };
-
-  
 
   const CustomNextArrow = (props: any) => {
     const { onClick } = props;
     return (
       <MdKeyboardArrowRight
         className="custom-arrow custom-next"
-        // style={{
-        //   ...style,
-        //   display: "block",
-        //   color: "black",
-        //   fontSize: "24px",
-        //   position: "absolute",
-        //   right: "45%",
-        //   zIndex: 1,
-        //   cursor: "pointer",
-        //   backgroundColor: "efefef",
-        //   borderRadius: "10px",
-        //   top: "200px",
-        // }}
         onClick={onClick}
       />
     );
@@ -80,7 +40,7 @@ const Home = () => {
   const settings = {
     dots: false,
     infinite: true,
-    speed: 5,
+    speed: 1500,
     slidesToShow: 7,
     slidesToScroll: 1,
     autoplay: true,
@@ -137,8 +97,6 @@ const Home = () => {
   useEffect(() => {
     getAllBannerHandler();
   }, []);
-
-
 
   return (
     <div>

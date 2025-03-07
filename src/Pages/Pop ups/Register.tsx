@@ -6,6 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useAtom } from "jotai";
 import { UserEmail } from "../../../Jotai";
 import toast from "react-hot-toast"; // Import toast
+import FullScreenLoader from "../../ReusableComp/FullScreenLoader";
 
 interface RegisterProps {
   onSwitch: () => void;
@@ -17,6 +18,7 @@ const Register: React.FC<RegisterProps> = ({ onSwitch, onRegister }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [finalEmail, setFinalEmail]: any = useAtom(UserEmail);
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -32,7 +34,7 @@ const Register: React.FC<RegisterProps> = ({ onSwitch, onRegister }) => {
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required("Required"),
-      lastName: Yup.string().required("Required"),
+      // lastName: Yup.string().required("Required"),
       gender: Yup.string().required("Select a gender"),
       dob: Yup.date().required("Required"),
       phone: Yup.string().min(10, "Invalid phone number").required("Required"),
@@ -42,48 +44,54 @@ const Register: React.FC<RegisterProps> = ({ onSwitch, onRegister }) => {
         .min(8, "Password must be at least 8 characters")
         .required("Required"),
       confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), ""], "Passwords must match")
+        .oneOf([Yup.ref("password"), ""], "Passwords must be matched")
         .required("Required"),
     }),
     onSubmit: async (values) => {
-      try {
-        const response = await registerUser({
-          body: {
-            email: values.email,
-            first_name: values.firstName,
-            last_name: values.lastName,
-            phone: values.phone,
-            dob: values.dob,
-            address: values.address, 
-            password: values.password, 
-            password2: values.confirmPassword,
-            gender: values.gender,
-          },
-        })
-        .then((res:any)=>{
+      setLoading(true);
+
+      await registerUser({
+        body: {
+          email: values.email,
+          first_name: values.firstName,
+          last_name: values.lastName,
+          phone: values.phone,
+          dob: values.dob,
+          address: values.address,
+          password: values.password,
+          password2: values.confirmPassword,
+          gender: values.gender,
+        },
+      })
+        .then((res: any) => {
           toast.success(res.msg);
-          onRegister()
-          setFinalEmail(values.email)
+          onRegister();
+          setFinalEmail(values.email);
+          setLoading(true);
         })
-      } catch (err: any) {
-        console.log("Error Response:", err);
-  
-        // Extract errors from response
-       toast.error(err.data?.error?.email?.[0])
-      }
+        .catch((err: any) => {
+          console.log("Error Response:", err);
+          toast.error(err.data?.error?.email?.[0]);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     },
   });
-  
- 
+
   return (
     <>
+      {" "}
+      {loading && <FullScreenLoader />}
       <form className="login-content" onSubmit={formik.handleSubmit}>
         <input
           type="text"
           id="first_Name"
           placeholder="First Name"
           className={`login-input ${
-            formik.touched.firstName && formik.errors.firstName ? "input-error" : ""
+            formik.touched.firstName && formik.errors.firstName
+              ? "input-error"
+              : ""
           }`}
           {...formik.getFieldProps("firstName")}
         />
@@ -142,7 +150,7 @@ const Register: React.FC<RegisterProps> = ({ onSwitch, onRegister }) => {
         <input
           type="text"
           id="phone"
-          placeholder="Phone Number"
+          placeholder="+91 1234-567-890"
           className="login-input"
           {...formik.getFieldProps("phone")}
         />

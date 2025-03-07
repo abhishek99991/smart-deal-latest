@@ -12,6 +12,7 @@
   height: 100%;
   object-fit: contain;
 }
+
 .product-angles-img-top{
   margin: 20px 0;
 }
@@ -84,6 +85,7 @@
   font-size: 15px;
   border-radius: 10px;
   border: none;
+  cursor: pointer;
 }
 .highlights-list{
   margin-left: 20px;
@@ -99,6 +101,7 @@
   margin-right: 10px;
   height: 60px;
   border: 1px solid var(--secondary-color);
+  cursor: pointer;
 }
 .product-small-img-btm img{
   width: 100%;
@@ -106,10 +109,9 @@
 
 }
 .specific-textarea{
-  height: 240px;
-  width: 100%;
+background-color: #343333;
 }
-.specific-textarea textarea{
+/* .specific-textarea textarea{
   width: 100%;
   height: 100%;
   border: none;
@@ -117,11 +119,22 @@
   padding: 10px 15px;
   font-size: 15px;
   resize: none;
+} */
+.specific-key-value {
+  /* background-color: #343333; */
+  border: 1px solid var(--secondary-color);
+  padding: 10px 15px;
+  margin-bottom: 2px;
+  width: 50%;
+}
+
+.specific-key-value .key-inner, .specific-key-value .value-inner{
+  font-size: 15px;
+  color: #fff;
 }
 .specification-top{
   margin: 15px 0;
-  border: 1px solid var(--secondary-color);
-  height: 290px;
+  border: 2px solid var(--secondary-color);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
@@ -129,10 +142,11 @@
   background-color: var(--secondary-color);
   padding: 15px 20px;
   font-size: 16px;
-  border-radius: 10px;
-  color: #fff;
+  border-radius: 6px;
+  color: #000;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
+  margin-bottom: 2px;
 }
 
 
@@ -165,7 +179,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  color: #f4f4f4;
+  color: #DE7921;
 }
 
 .score {

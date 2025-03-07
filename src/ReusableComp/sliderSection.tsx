@@ -1,14 +1,35 @@
 import React, { useEffect, useState } from "react";
-import SpeakerSlider from "../assets/slider-speaker.png";
 import Slider from "react-slick";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import speakerSliderImg from "../assets/speaker-slider-img.png";
 import { IoIosStar } from "react-icons/io";
 import { IoIosStarHalf } from "react-icons/io";
 import { IoIosStarOutline } from "react-icons/io";
 import { getProductDetail, randomCategory } from "../store/services/products";
 import { useNavigate } from "react-router-dom";
+
+const renderStars = (rating: number) => {
+  const stars = [];
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+  // const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<IoIosStar key={`full-${i}`} className="brown" size={20} />);
+  }
+
+  if (hasHalfStar) {
+    stars.push(<IoIosStarHalf key="half" className="brown" size={20} />);
+  }
+
+  // for (let i = 0; i < emptyStars; i++) {
+  //   stars.push(
+  //     <IoIosStarOutline key={`empty-${i}`} className="brown" size={20} />
+  //   );
+  // }
+
+  return stars;
+};
 
 const sliderSection = () => {
   const [sliderData, setSliderData]: any = useState([]);
@@ -75,7 +96,6 @@ const sliderSection = () => {
   useEffect(() => {
     randomCategory()
       .then((res: any) => {
-        console.log("khkhkjhk", res.data);
         setSliderData(res.data);
       })
       .catch((err) => {
@@ -93,7 +113,6 @@ const sliderSection = () => {
       .then((res: any) => {
         // setLoading(false);
         navigate(`/product-details/${id}`, { state: { product: res } });
-        console.log("reshhhhhhhhhhhhhhhhhh", res);
       })
       .catch((err: any) => {
         console.log("err", err);
@@ -103,55 +122,55 @@ const sliderSection = () => {
 
   return (
     <div>
-      {sliderData.map((item: any) => (
-        <div className="container slider-top">
-          <div className="flex align-center space-bw" key={item.id}>
+      {sliderData.map((items: any) => (
+        <div className="container slider-top" key={items.id}>
+          <div className="flex align-center space-bw">
             <div className="col-40 speaker-slider-img">
-              <h3>{item.category.name}</h3>
+              <h3>{items.category.name}</h3>
               <div className="speaker-slider-img-inner">
-                <img src={item.category.category_image} alt="" />
+                <img src={items.category.category_image} alt="" />
               </div>
             </div>
 
             <div className="col-60 speaker-slide">
               <Slider {...settings}>
-                {item.products.map((product: any) => (
+                {items.products.map((item: any) => (
                   <div
                     className="slide-top-head"
-                    key={product.id}
-                    onClick={() => handleProductDetail(product.id)}
+                    key={item.id}
+                    onClick={() => handleProductDetail(item.id)}
                   >
                     <div className="slide-speaker speaker-margin">
-                      <img src={product.image} alt="Slide 1" />
+                      <img src={item.image} alt="Slide 1" />
                     </div>
                     <div className="bose-smart-top">
                       <div className="bose-smart-text">
-                        {product.brand} {product.model}
+                        {item.brand} {item.model}
                       </div>
-                      <div className="flex align-center">
+                      {/* {<div className="flex align-center">
+                        {item.overall_rating}
                         <IoIosStar className="brown" size={20} />
                         <IoIosStar className="brown" size={20} />
                         <IoIosStar className="brown" size={20} />
                         <IoIosStarHalf className="brown" size={20} />
                         <IoIosStarOutline className="brown" size={20} />
+                      </div> } */}
+                      <div className="flex align-center">
+                        {renderStars(item.overall_rating)}
                       </div>
                       <div className="flex align-center speaker-price-top">
                         <div className="speaker-price-head">
                           <div className="speaker-price-first">
                             {" "}
-                            {(
-                              product.price *
-                              (100 - product.discount) *
-                              0.01
-                            ).toFixed(2)}
+                            {item.discounted_price}
                             AED
                           </div>
                           <div className="speaker-price-second line-through">
-                            {product.price}
+                            {item.price}
                           </div>
                         </div>
                         <div className="speaker-price-off">
-                          {product.discount}%
+                          {item.discount}%
                         </div>
                       </div>
                       {/* <div className="flex align-center speaker-add-buy">

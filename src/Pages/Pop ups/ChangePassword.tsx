@@ -6,7 +6,6 @@ import OtpPopup from "./otpPopup";
 import { resetPassword } from "../../store/services/Auth";
 import toast from "react-hot-toast";
 
-
 const ChangePassword = ({ data, forgetonClose }: any) => {
   const [sendOtp, setSendOtp] = useState(false);
 
@@ -24,23 +23,25 @@ const ChangePassword = ({ data, forgetonClose }: any) => {
     const body = {
       ...data,
       new_password: values?.newPassword,
-      confirm_password: values?.confirmNewPassword
+      confirm_password: values?.confirmNewPassword,
     };
     resetPassword({
-      body
-    })?.then((res: any) =>{
-      toast.success(res?.msg);
-      setTimeout(() => {
-        setSubmitting(false);
-        setSendOtp(true);
-        forgetonClose();
-      }, 500);
-    })?.catch((err: any) =>{
-      toast.error(err?.data?.error);
+      body,
     })
-  }
+      ?.then((res: any) => {
+        toast.success(res?.msg);
+        setTimeout(() => {
+          setSubmitting(false);
+          setSendOtp(true);
+          forgetonClose();
+        }, 500);
+      })
+      ?.catch((err: any) => {
+        toast.error(err?.data?.error);
+      });
+  };
 
-  return ( 
+  return (
     <>
       {sendOtp ? (
         <OtpPopup onClose={forgetonClose} onOtpSuccess={setSendOtp} />
@@ -57,41 +58,52 @@ const ChangePassword = ({ data, forgetonClose }: any) => {
             <h2>Change Password</h2>
 
             <Formik
-                      initialValues={{ newPassword: "", confirmNewPassword: "" }}
-                      validationSchema={validationSchema}
-                      onSubmit={(values, { setSubmitting }) => {
-                        apiHandler(values, setSubmitting);
-                      }}
->
-                {({ isSubmitting }) => (
-                  <Form>
-                    <div className="forget-input">
-                      <Field
-                        type="password"
-                        name="newPassword"
-                        placeholder="New Password"
-                        className="input-field"
-                      />
-                      <ErrorMessage name="newPassword" component="div" className="changepwd-error-message" />
-                    </div>
-                    
-      <div className="forget-input">
-        <Field
-          type="password"
-          name="confirmNewPassword"
-          placeholder="Confirm New Password"
-          className="input-field"
-        />
-        <ErrorMessage name="confirmNewPassword" component="div" className="changepwd-error-message" />
-      </div>
-      
-      <button type="submit" className="forget-update-btn" disabled={isSubmitting}>
-        Submit
-      </button>
-    </Form>
-  )}
-</Formik>
+              initialValues={{ newPassword: "", confirmNewPassword: "" }}
+              validationSchema={validationSchema}
+              onSubmit={(values, { setSubmitting }) => {
+                apiHandler(values, setSubmitting);
+              }}
+            >
+              {({ isSubmitting }) => (
+                <Form>
+                  <div className="forget-input">
+                    <Field
+                      type="password"
+                      name="newPassword"
+                      placeholder="New Password"
+                      className="input-field"
+                    />
+                    <ErrorMessage
+                      name="newPassword"
+                      component="div"
+                      className="changepwd-error-message"
+                    />
+                  </div>
 
+                  <div className="forget-input">
+                    <Field
+                      type="password"
+                      name="confirmNewPassword"
+                      placeholder="Confirm New Password"
+                      className="input-field"
+                    />
+                    <ErrorMessage
+                      name="confirmNewPassword"
+                      component="div"
+                      className="changepwd-error-message"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="forget-update-btn"
+                    disabled={isSubmitting}
+                  >
+                    Submit
+                  </button>
+                </Form>
+              )}
+            </Formik>
           </div>
         </div>
       )}
